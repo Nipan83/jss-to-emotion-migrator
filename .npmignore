@@ -1,0 +1,38 @@
+# Development files
+demo/
+tests/
+coverage/
+.nyc_output/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Git files
+.git/
+.gitignore
+
+# Configuration files
+jest.config.js
+.eslintrc*
+.prettierrc*
+.editorconfig
+
+# CI/CD
+.github/
+.travis.yml
+.circleci/
+
+# Documentation source (compiled docs are included)
+docs/
+
+# Development scripts
+scripts/
+
+# Miscellaneous
+*.log
+.DS_Store
+Thumbs.db

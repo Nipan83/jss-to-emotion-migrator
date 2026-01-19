@@ -1,0 +1,80 @@
+{
+  "name": "jss-to-emotion-migrator",
+  "version": "1.0.0",
+  "description": "A codemod tool to migrate JSS styles (makeStyles, withStyles, createStyles) to Emotion using MUI styled API",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "bin": {
+    "jss-to-emotion": "./bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src bin tests",
+    "lint:fix": "eslint src bin tests --fix",
+    "prepublishOnly": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/user/jss-to-emotion-migrator.git"
+  },
+  "homepage": "https://github.com/user/jss-to-emotion-migrator#readme",
+  "bugs": {
+    "url": "https://github.com/user/jss-to-emotion-migrator/issues"
+  },
+  "keywords": [
+    "jss",
+    "emotion",
+    "mui",
+    "material-ui",
+    "codemod",
+    "migration",
+    "makeStyles",
+    "withStyles",
+    "createStyles",
+    "styled",
+    "css-in-js",
+    "react",
+    "jscodeshift",
+    "ast",
+    "transform"
+  ],
+  "author": "Nipan Das <nipandas83@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "glob": "^10.3.10",
+    "jscodeshift": "^0.15.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "peerDependencies": {
+    "@emotion/react": ">=11.0.0",
+    "@emotion/styled": ">=11.0.0",
+    "@mui/material": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@emotion/react": {
+      "optional": true
+    },
+    "@emotion/styled": {
+      "optional": true
+    },
+    "@mui/material": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
