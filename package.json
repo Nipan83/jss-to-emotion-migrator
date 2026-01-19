@@ -24,11 +24,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/user/jss-to-emotion-migrator.git"
+    "url": "git+https://github.com/Nipan83/jss-to-emotion-migrator.git"
   },
-  "homepage": "https://github.com/user/jss-to-emotion-migrator#readme",
+  "homepage": "https://github.com/Nipan83/jss-to-emotion-migrator#readme",
   "bugs": {
-    "url": "https://github.com/user/jss-to-emotion-migrator/issues"
+    "url": "https://github.com/Nipan83/jss-to-emotion-migrator/issues"
   },
   "keywords": [
     "jss",
