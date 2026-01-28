@@ -76,11 +76,16 @@ function createStyledComponent(j, componentName, elementType, styleValue, hasThe
  */
 function findExternalStyleDefinitions(j, root) {
   const styleDefinitions = new Map();
-  
+
   root.find(j.VariableDeclarator).forEach(path => {
-    const name = path.node.id.name;
+    const id = path.node.id;
     const init = path.node.init;
-    
+
+    // Skip if id is not an Identifier (e.g., destructuring patterns)
+    if (id.type !== 'Identifier') return;
+
+    const name = id.name;
+
     // Match patterns like: const styles = {...} or const xxxStyles = (theme) => ({...})
     if (name === 'styles' || name.endsWith('Styles') || name.endsWith('Style')) {
       if (init) {
@@ -91,7 +96,7 @@ function findExternalStyleDefinitions(j, root) {
       }
     }
   });
-  
+
   return styleDefinitions;
 }
 
@@ -145,15 +150,20 @@ function resolveStylesArgument(j, root, stylesArg, externalStyles) {
  */
 function processMakeStyles(j, root, makeStylesName, externalStyles, context) {
   const makeStylesCalls = [];
-  
+
   root.find(j.VariableDeclarator).forEach(path => {
+    const id = path.node.id;
     const init = path.node.init;
+
+    // Skip if id is not an Identifier (e.g., destructuring patterns)
+    if (id.type !== 'Identifier') return;
+
     if (init && init.type === 'CallExpression') {
       const callee = init.callee;
       if (callee.type === 'Identifier' && callee.name === makeStylesName) {
         makeStylesCalls.push({
           path,
-          hookName: path.node.id.name,
+          hookName: id.name,
           argument: init.arguments[0],
         });
       }
@@ -173,10 +183,15 @@ function processMakeStyles(j, root, makeStylesName, externalStyles, context) {
     // Find the useStyles() call
     let classesVarName = 'classes';
     root.find(j.VariableDeclarator).forEach(varPath => {
+      const varId = varPath.node.id;
       const init = varPath.node.init;
+
+      // Skip if id is not an Identifier
+      if (varId.type !== 'Identifier') return;
+
       if (init && init.type === 'CallExpression') {
         if (init.callee.type === 'Identifier' && init.callee.name === hookName) {
-          classesVarName = varPath.node.id.name;
+          classesVarName = varId.name;
         }
       }
     });

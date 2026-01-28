@@ -15,14 +15,22 @@ This tool handles these edge cases automatically, making large-scale migrations 
 
 ## Features
 
+### Core Features
 - ✅ **Automatic Migration** - Converts `makeStyles` and `withStyles` to `styled()` components
 - ✅ **External Style Support** - Handles styles defined in separate files
 - ✅ **Theme-Aware** - Preserves theme dependencies in styled components
-- ✅ **Smart Element Inference** - Detects HTML element types from JSX usage
 - ✅ **Cleanup Tool** - Removes unused JSS imports and dead code files
 - ✅ **Dry Run Mode** - Preview changes before applying them
 - ✅ **Incremental Migration** - Filter files with `--include`/`--exclude` patterns
 - ✅ **CI/CD Ready** - Non-interactive mode with `--yes` flag
+
+### Enhanced Features (v2.0+)
+- ✨ **Semantic Component Naming** - Generates meaningful names (e.g., `TitleText`, `LoadingIcon`, `StyledButton`)
+- ✨ **MUI-First Approach** - Prioritizes MUI components (Box, Typography) over HTML elements
+- ✨ **Dynamic Props Detection** - Automatically detects and handles prop-based styling
+- ✨ **Conditional Spread Support** - Preserves `...condition && { styles }` patterns
+- ✨ **Smart Element Inference** - Detects appropriate MUI components from class names
+- ✨ **Pattern Recognition** - Follows established codebase patterns automatically
 
 ## Installation
 
@@ -314,9 +322,46 @@ Check the error details and file:
 jss-to-emotion migrate "src/**/*.jsx" --verbose
 ```
 
+## Documentation
+
+### Comprehensive Guides
+
+- **[MIGRATION-PATTERNS.md](./MIGRATION-PATTERNS.md)** - Complete guide to all migration patterns and JSX transformations
+- **[UTILITY-UPDATES.md](./UTILITY-UPDATES.md)** - Detailed documentation of v2.0 enhancements and improvements
+- **[BEFORE-AFTER-EXAMPLES.md](./BEFORE-AFTER-EXAMPLES.md)** - Real-world before/after examples with explanations
+- **[MUI-MIGRATION-GUIDE.md](./MUI-MIGRATION-GUIDE.md)** - MUI-specific migration patterns (nested selectors approach)
+
+### Quick Reference
+
+**Component Naming:**
+- `root` / `container` → `StyledBox`
+- `title` / `heading` → `TitleText`
+- `button` → `StyledButton`
+- `loading` → `LoadingIcon`
+- `tabs` → `StyledTabs`
+
+**Element Inference:**
+- Container classes → `Box`
+- Text classes → `Typography`
+- Button classes → `Button`
+- Loading classes → `CircularProgress`
+
+**Dynamic Styling:**
+```javascript
+// Automatically detected and transformed
+const StyledComponent = styled(Component)(({ propName }) => ({
+  property: propName ? 'value1' : 'value2',
+  ...propName && { additionalStyles },
+}));
+```
+
 ## Contributing
 
 Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for release history and updates.
 
 ## License
 

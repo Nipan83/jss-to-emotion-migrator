@@ -224,7 +224,8 @@ program
   .argument('<patterns...>', 'File patterns to transform')
   .option('--dry-run', 'Preview what will be migrated without making changes', false)
   .option('-p, --parser <parser>', 'Parser to use (babel, tsx, flow)', 'babel')
-  .option('-t, --transform <transform>', 'Transform (jssToEmotion, makeStyles, withStyles)', 'jssToEmotion')
+  .option('-t, --transform <transform>', 'Transform (jssToEmotion, jssToEmotionMUI, makeStyles, withStyles)', 'jssToEmotion')
+  .option('--mui-pattern', 'Use MUI-recommended migration pattern (same as -t jssToEmotionMUI)', false)
   .option('-v, --verbose', 'Verbose output', false)
   .option('-y, --yes', 'Skip confirmation prompt', false)
   .option('-i, --include <pattern>', 'Regex to include files (repeatable)', collect, [])
@@ -235,11 +236,19 @@ program
   .action(async (patterns, options) => {
     const startTime = Date.now();
     const isDryRun = options.dryRun;
-    
+
+    // Handle --mui-pattern flag
+    if (options.muiPattern) {
+      options.transform = 'jssToEmotionMUI';
+    }
+
     if (isDryRun) {
       printHeader('👁️', 'JSS to Emotion Migrator - DRY RUN', 'Preview mode: No files will be modified');
     } else {
-      printHeader('🎨', 'JSS to Emotion Migrator', 'Converting makeStyles/withStyles to styled()');
+      const subtitle = options.transform === 'jssToEmotionMUI'
+        ? 'Converting to MUI-recommended pattern (PREFIX + classes)'
+        : 'Converting makeStyles/withStyles to styled()';
+      printHeader('🎨', 'JSS to Emotion Migrator', subtitle);
     }
     
     const ignorePatterns = options.ignore.split(',').map(p => p.trim());

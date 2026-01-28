@@ -62,29 +62,34 @@ function findUnusedStyleDeclarations(j, root) {
   
   // Find patterns like: const useStyles = makeStyles(...) or const styles = (theme) => ({...})
   root.find(j.VariableDeclarator).forEach(path => {
-    const name = path.node.id.name;
+    const id = path.node.id;
     const init = path.node.init;
-    
+
+    // Skip if id is not an Identifier (e.g., destructuring patterns)
+    if (id.type !== 'Identifier') return;
+
+    const name = id.name;
+
     if (!init) return;
-    
+
     // Check if it's a makeStyles/withStyles call
     const isMakeStylesCall = init.type === 'CallExpression' &&
       init.callee.type === 'Identifier' &&
       ['makeStyles', 'withStyles', 'createStyles'].includes(init.callee.name);
-    
+
     // Check if it looks like a styles object/function
-    const isStylesDeclaration = 
+    const isStylesDeclaration =
       (name === 'styles' || name.endsWith('Styles') || name.endsWith('Style')) &&
-      (init.type === 'ArrowFunctionExpression' || 
+      (init.type === 'ArrowFunctionExpression' ||
        init.type === 'FunctionExpression' ||
        init.type === 'ObjectExpression');
-    
+
     // Check if it's a useStyles hook result
     const isUseStylesResult = init.type === 'CallExpression' &&
       init.callee.type === 'Identifier' &&
       init.callee.name.startsWith('use') &&
       init.callee.name.endsWith('Styles');
-    
+
     if (isMakeStylesCall || isStylesDeclaration || isUseStylesResult) {
       // Check if this variable is used anywhere
       if (!isIdentifierUsed(j, root, name, path.node)) {
@@ -217,6 +222,11 @@ function analyzeIfDeadFile(j, root) {
       if (decl) {
         if (decl.type === 'VariableDeclaration') {
           for (const d of decl.declarations) {
+            // Skip if not an Identifier (e.g., destructuring)
+            if (d.id.type !== 'Identifier') {
+              hasOnlyStyleCode = false;
+              continue;
+            }
             const name = d.id.name;
             if (!(name === 'styles' || name.endsWith('Styles') || name.endsWith('Style'))) {
               hasOnlyStyleCode = false;
@@ -234,6 +244,11 @@ function analyzeIfDeadFile(j, root) {
     } else if (node.type === 'VariableDeclaration') {
       // Check if it's a style declaration
       for (const d of node.declarations) {
+        // Skip if not an Identifier (e.g., destructuring)
+        if (d.id.type !== 'Identifier') {
+          hasOnlyStyleCode = false;
+          continue;
+        }
         const name = d.id.name;
         if (!(name === 'styles' || name.endsWith('Styles') || name.endsWith('Style') ||
               name.startsWith('use') && name.endsWith('Styles'))) {

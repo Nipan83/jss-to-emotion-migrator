@@ -37,14 +37,14 @@ describe('JSS to Emotion Migrator', () => {
       
       // The result should contain key elements
       expect(result).toContain("import { styled } from '@mui/material/styles'");
-      expect(result).toContain("const Root = styled('div')");
-      expect(result).toContain("const Label = styled('span')");
+      expect(result).toContain("const StyledBox = styled('div')");
+      expect(result).toContain("const LabelText = styled('span')");
       expect(result).not.toContain('makeStyles');
       expect(result).not.toContain('useStyles');
       expect(result).not.toContain('classes.root');
       expect(result).not.toContain('classes.label');
-      expect(result).toContain('<Root>');
-      expect(result).toContain('<Label>');
+      expect(result).toContain('<StyledBox>');
+      expect(result).toContain('<LabelText>');
     });
     
     test('should transform makeStyles with external style definitions', () => {
@@ -55,9 +55,9 @@ describe('JSS to Emotion Migrator', () => {
       });
       
       expect(result).toContain("import { styled } from '@mui/material/styles'");
-      expect(result).toContain("const Container = styled('div')");
-      expect(result).toContain("const Title = styled('h2')");
-      expect(result).toContain("const Button = styled('button')");
+      expect(result).toContain("const StyledBox = styled('div')");
+      expect(result).toContain("const TitleText = styled('h2')");
+      expect(result).toContain("const StyledButton = styled('button')");
       expect(result).not.toContain('const styles =');
       expect(result).not.toContain('makeStyles');
       expect(result).not.toContain('useStyles');
@@ -71,8 +71,8 @@ describe('JSS to Emotion Migrator', () => {
       });
       
       expect(result).toContain("import { styled } from '@mui/material/styles'");
-      expect(result).toContain("const Box = styled('div')");
-      expect(result).toContain("const Text = styled('p')");
+      expect(result).toContain("const StyledBox = styled('div')");
+      expect(result).toContain("const StyledText = styled('p')");
       // Should not have theme destructuring for static styles
       expect(result).not.toContain('makeStyles');
       expect(result).not.toContain('useStyles');
@@ -88,7 +88,7 @@ describe('JSS to Emotion Migrator', () => {
       });
       
       expect(result).toContain("import { styled } from '@mui/material/styles'");
-      expect(result).toContain("const Root = styled('div')");
+      expect(result).toContain("const StyledBox = styled(Box)");
       expect(result).not.toContain('withStyles');
       expect(result).not.toContain('classes');
       // Should remove the HOC wrapping
@@ -139,7 +139,7 @@ export default Test;
       });
       
       expect(result).toContain("import { styled } from '@mui/material/styles'");
-      expect(result).toContain("const Root = styled('div')");
+      expect(result).toContain("const StyledBox = styled('div')");
       expect(result).not.toContain('makeStyles');
     });
   });
@@ -149,27 +149,28 @@ describe('Utility functions', () => {
   const utils = require('../src/utils');
   
   test('toPascalCase should convert class names correctly', () => {
-    expect(utils.toPascalCase('root')).toBe('Root');
+    expect(utils.toPascalCase('root')).toBe('StyledBox');
     expect(utils.toPascalCase('buttonLabel')).toBe('ButtonLabel');
-    expect(utils.toPascalCase('container')).toBe('Container');
+    expect(utils.toPascalCase('container')).toBe('StyledBox');
   });
   
   test('generateUniqueComponentName should handle duplicates', () => {
-    const existingNames = new Set(['Root', 'Label']);
-    
+    const existingNames = new Set(['StyledBox', 'LabelText']);
+
     const name1 = utils.generateUniqueComponentName('root', existingNames);
-    expect(name1).toBe('Root1');
-    
+    expect(name1).toBe('StyledBox1');
+
     const name2 = utils.generateUniqueComponentName('root', existingNames);
-    expect(name2).toBe('Root2');
+    expect(name2).toBe('StyledBox2');
   });
   
   test('inferElementType should infer correct element types', () => {
-    expect(utils.inferElementType('button')).toBe('button');
-    expect(utils.inferElementType('submitButton')).toBe('button');
+    expect(utils.inferElementType('button')).toBe('Button');
+    expect(utils.inferElementType('submitButton')).toBe('Button');
     expect(utils.inferElementType('link')).toBe('a');
-    expect(utils.inferElementType('siteHeader')).toBe('header'); expect(utils.inferElementType('pageFooter')).toBe('footer');
-    expect(utils.inferElementType('unknown')).toBe('div');
+    expect(utils.inferElementType('siteHeader')).toBe('header');
+    expect(utils.inferElementType('pageFooter')).toBe('footer');
+    expect(utils.inferElementType('unknown')).toBe('Box');
   });
 });
 

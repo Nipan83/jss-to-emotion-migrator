@@ -258,7 +258,12 @@ function transformer(fileInfo, api, options = {}) {
   if (hasChanges) {
     // Clean up styles variable definitions that are no longer used
     root.find(j.VariableDeclarator).forEach(path => {
-      const name = path.node.id.name;
+      const id = path.node.id;
+
+      // Skip if id is not an Identifier (e.g., destructuring patterns)
+      if (id.type !== 'Identifier') return;
+
+      const name = id.name;
       if (name === 'styles' || name.endsWith('Styles')) {
         // Check if it's still referenced
         let usageCount = 0;
@@ -267,7 +272,7 @@ function transformer(fileInfo, api, options = {}) {
             usageCount++;
           }
         });
-        
+
         if (usageCount === 0) {
           // Remove the declaration
           const parent = path.parentPath;

@@ -27,12 +27,84 @@ function usesTheme(j, node) {
  */
 function usesProps(j, node, propsParamName = 'props') {
   let hasProps = false;
-  
+
   j(node).find(j.Identifier, { name: propsParamName }).forEach(() => {
     hasProps = true;
   });
-  
+
   return hasProps;
+}
+
+/**
+ * Detects which props are used in a style object for dynamic styling
+ * Based on patterns like: const StyledComponent = styled(Component)(({ propName }) => ({...}))
+ * @param {object} j - jscodeshift API
+ * @param {object} node - AST node
+ * @returns {Array<string>} - Array of prop names used in the styles
+ */
+function detectUsedProps(j, node) {
+  const usedProps = new Set();
+
+  // Find conditional expressions that reference props
+  j(node).find(j.ConditionalExpression).forEach(path => {
+    // Look for patterns like: propName ? 'value1' : 'value2'
+    if (path.node.test && path.node.test.type === 'Identifier') {
+      usedProps.add(path.node.test.name);
+    }
+    // Look for patterns like: props.propName ? 'value1' : 'value2'
+    if (path.node.test && path.node.test.type === 'MemberExpression') {
+      if (path.node.test.property && path.node.test.property.type === 'Identifier') {
+        usedProps.add(path.node.test.property.name);
+      }
+    }
+  });
+
+  // Find member expressions accessing props
+  j(node).find(j.MemberExpression).forEach(path => {
+    // Pattern: props.propName
+    if (path.node.object && path.node.object.type === 'Identifier' &&
+        path.node.object.name === 'props' &&
+        path.node.property && path.node.property.type === 'Identifier') {
+      usedProps.add(path.node.property.name);
+    }
+  });
+
+  // Find identifiers that might be destructured props
+  j(node).find(j.Identifier).forEach(path => {
+    const name = path.node.name;
+    // Common prop patterns (excluding common JS keywords and theme)
+    const excludeList = ['theme', 'return', 'if', 'const', 'let', 'var', 'true', 'false',
+                         'null', 'undefined', 'key', 'index', 'item'];
+    if (!excludeList.includes(name) &&
+        path.parent &&
+        path.parent.node &&
+        path.parent.node.type === 'ConditionalExpression') {
+      usedProps.add(name);
+    }
+  });
+
+  return Array.from(usedProps);
+}
+
+/**
+ * Checks if styles contain spread operators with conditional logic
+ * Pattern: ...propName && { styles }
+ * @param {object} j - jscodeshift API
+ * @param {object} node - AST node
+ * @returns {boolean}
+ */
+function hasConditionalSpread(j, node) {
+  let hasSpread = false;
+
+  j(node).find(j.SpreadElement).forEach(path => {
+    const argument = path.node.argument;
+    // Check for: ...condition && { styles }
+    if (argument && argument.type === 'LogicalExpression' && argument.operator === '&&') {
+      hasSpread = true;
+    }
+  });
+
+  return hasSpread;
 }
 
 /**
@@ -169,6 +241,8 @@ function transformStyleValue(j, node, originalThemeParam = 'theme') {
 module.exports = {
   usesTheme,
   usesProps,
+  detectUsedProps,
+  hasConditionalSpread,
   extractStyleClasses,
   isFunctionWithTheme,
   getThemeParamName,
