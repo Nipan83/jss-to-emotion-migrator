@@ -57,11 +57,8 @@ jss-to-emotion migrate "src/**/*.{js,jsx,ts,tsx}" --dry-run
 ### 2. Run Migration
 
 ```bash
-# Migrate all files (default pattern - creates individual styled components)
+# Migrate all files (uses MUI-recommended pattern: PREFIX + classes + nested selectors)
 jss-to-emotion migrate "src/**/*.{js,jsx,ts,tsx}"
-
-# Use MUI-recommended pattern (PREFIX + classes + nested selectors)
-jss-to-emotion migrate "src/**/*.{js,jsx,ts,tsx}" --mui-pattern
 
 # Migrate specific directories
 jss-to-emotion migrate "src/components/**/*.jsx" "src/pages/**/*.jsx"
@@ -93,8 +90,6 @@ jss-to-emotion migrate <patterns...> [options]
 |--------|-------------|---------|
 | `--dry-run` | Preview changes without modifying files | `false` |
 | `-p, --parser <parser>` | Parser to use (`babel`, `tsx`, `flow`) | `babel` |
-| `-t, --transform <name>` | Transform to use (`jssToEmotion`, `jssToEmotionMUI`, `makeStyles`, `withStyles`) | `jssToEmotion` |
-| `--mui-pattern` | Use MUI-recommended migration pattern (same as `-t jssToEmotionMUI`) | `false` |
 | `-v, --verbose` | Show detailed output | `false` |
 | `-y, --yes` | Skip confirmation prompts | `false` |
 | `-i, --include <pattern>` | Regex to include files (repeatable) | `[]` |
@@ -326,28 +321,18 @@ Check the error details and file:
 jss-to-emotion migrate "src/**/*.jsx" --verbose
 ```
 
-## Choosing Migration Pattern
+## Migration Pattern
 
-The tool supports two migration patterns:
-
-### Default Pattern (Recommended for most cases)
-Creates individual styled components for each JSS class, providing clean separation and better component reusability.
-
-```bash
-jss-to-emotion migrate "src/**/*.jsx"
-```
-
-### MUI Pattern (`--mui-pattern`)
-Uses MUI's recommended approach with PREFIX + classes + nested selectors. Better for:
+This tool uses MUI's recommended approach with PREFIX + classes + nested selectors. This pattern is optimal for:
 - Large refactors requiring minimal JSX changes
 - Components heavily using MUI's `classes` prop
 - Maintaining backward compatibility during gradual migration
 
 ```bash
-jss-to-emotion migrate "src/**/*.jsx" --mui-pattern
+jss-to-emotion migrate "src/**/*.jsx"
 ```
 
-See **[MUI-MIGRATION-GUIDE.md](./MUI-MIGRATION-GUIDE.md)** for detailed comparison and examples.
+See **[MUI-MIGRATION-GUIDE.md](./MUI-MIGRATION-GUIDE.md)** for detailed examples and best practices.
 
 ## Documentation
 

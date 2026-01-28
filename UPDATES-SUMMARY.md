@@ -1,8 +1,10 @@
 # JSS-to-Emotion Utility Updates Summary
 
-## What Was Updated
+> **Note:** As of version 2.1.0, this tool uses the MUI-recommended pattern by default (PREFIX + classes + nested selectors). The updates documented here relate to legacy enhancements that are no longer applicable. For current migration details, see [MUI-MIGRATION-GUIDE.md](./MUI-MIGRATION-GUIDE.md).
 
-The JSS-to-Emotion migrator utility has been enhanced to follow the established patterns from your refactored files (`img-tile-preview-graph.js` and `img-multi-tabs-component.js`).
+## What Was Updated (Legacy)
+
+This document summarizes historical updates to the JSS-to-Emotion migrator utility for reference purposes.
 
 ## Files Modified
 

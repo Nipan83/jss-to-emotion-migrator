@@ -1,10 +1,12 @@
 # JSS to Emotion Migration Patterns
 
-This guide documents the migration patterns used in this codebase, based on the established patterns from `img-tile-preview-graph.js` and `img-multi-tabs-component.js`.
+> **Note:** As of version 2.1.0, this tool uses the MUI-recommended pattern by default (PREFIX + classes + nested selectors). For the current migration approach, see [MUI-MIGRATION-GUIDE.md](./MUI-MIGRATION-GUIDE.md).
+
+This guide documents legacy migration patterns based on individual styled components. These patterns are preserved for reference but are no longer used by the tool.
 
 ## Overview
 
-The migration utility transforms JSS styles (makeStyles, withStyles) to Emotion styled components following MUI v5 best practices.
+The migration utility now transforms JSS styles (makeStyles, withStyles) to Emotion styled components using MUI's recommended pattern with PREFIX, classes object, and nested selectors.
 
 ## Core Patterns
 
@@ -249,11 +251,13 @@ const MyComponent = ({ isActive }) => {
 
 ```bash
 # Dry run to preview changes
-./jss-to-emotion-migrator/bin/cli.js migrate "src/app/**/*.js" --dry-run
+jss-to-emotion migrate "src/app/**/*.js" --dry-run
 
-# Apply migration
-./jss-to-emotion-migrator/bin/cli.js migrate "src/app/**/*.js"
+# Apply migration (uses MUI pattern by default)
+jss-to-emotion migrate "src/app/**/*.js"
 ```
+
+See [MUI-MIGRATION-GUIDE.md](./MUI-MIGRATION-GUIDE.md) for the current migration pattern details.
 
 ### 2. What Gets Transformed
 

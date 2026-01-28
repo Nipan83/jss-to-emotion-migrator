@@ -1,6 +1,8 @@
 # Before & After: JSS to Emotion Migration Examples
 
-This document shows real-world examples of how the updated utility transforms JSS code to Emotion, following the patterns from `img-tile-preview-graph.js` and `img-multi-tabs-component.js`.
+> **Note:** As of version 2.1.0, this tool uses the MUI-recommended pattern by default (PREFIX + classes + nested selectors). The examples below show a legacy pattern that is no longer used by the tool. For current migration examples, see [MUI-MIGRATION-GUIDE.md](./MUI-MIGRATION-GUIDE.md).
+
+This document shows legacy examples of individual styled component transformations for reference purposes only.
 
 ## Example 1: Simple Container with Text
 

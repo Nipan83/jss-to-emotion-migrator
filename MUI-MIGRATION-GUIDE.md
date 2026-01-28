@@ -1,10 +1,10 @@
 # MUI-Recommended Migration Pattern
 
-This guide explains the MUI-recommended migration pattern using the `--mui-pattern` flag.
+This guide explains the MUI-recommended migration pattern used by the jss-to-emotion-migrator tool.
 
 ## Overview
 
-The `--mui-pattern` flag implements the migration strategy recommended by MUI's official migration guide. Instead of creating individual styled components for each class, it creates:
+This tool implements the migration strategy recommended by MUI's official migration guide. Instead of creating individual styled components for each class, it creates:
 
 1. **PREFIX constant** - Component name prefix for class names
 2. **classes object** - Maintains backward compatibility with existing JSX
@@ -128,43 +128,18 @@ return (
 ### Basic Command
 
 ```bash
-./jss-to-emotion-migrator/bin/cli.js migrate "src/**/*.js" --mui-pattern --dry-run
+jss-to-emotion migrate "src/**/*.js" --dry-run
 ```
 
 ### With Other Options
 
 ```bash
 # Include only specific files
-./jss-to-emotion-migrator/bin/cli.js migrate "src/**/*.js" --mui-pattern --include "overview"
+jss-to-emotion migrate "src/**/*.js" --include "overview"
 
 # Skip confirmation
-./jss-to-emotion-migrator/bin/cli.js migrate "src/**/*.js" --mui-pattern -y
+jss-to-emotion migrate "src/**/*.js" -y
 ```
-
-## Comparison: Default vs MUI Pattern
-
-### Default Transform (`jssToEmotion`)
-
-- Creates individual styled components for each class
-- Replaces JSX elements directly
-- Best for simple className usage
-- **Problem**: Doesn't handle MUI's `classes` prop pattern
-
-### MUI Pattern Transform (`jssToEmotionMUI`)
-
-- Creates single Root component with nested selectors
-- Maintains classes object
-- Requires manual JSX wrapping
-- **Solution**: Fully supports MUI's `classes` prop pattern
-
-## When to Use Which Pattern
-
-| Use Case | Recommended Transform |
-|----------|----------------------|
-| Simple components with className | `jssToEmotion` (default) |
-| MUI components with classes prop | `jssToEmotionMUI` (--mui-pattern) |
-| Mix of className and classes prop | `jssToEmotionMUI` (--mui-pattern) |
-| Large refactor with minimal changes | `jssToEmotionMUI` (--mui-pattern) |
 
 ## Troubleshooting
 
@@ -211,7 +186,7 @@ const Root = styled('div')({
 
 ## Migration Checklist
 
-- [ ] Run migration with `--mui-pattern --dry-run` to preview
+- [ ] Run migration with `--dry-run` to preview
 - [ ] Review the generated PREFIX and classes object
 - [ ] Apply the migration without `--dry-run`
 - [ ] Test the component visually (JSX is automatically wrapped!)

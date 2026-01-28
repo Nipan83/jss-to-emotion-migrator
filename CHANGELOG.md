@@ -81,6 +81,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Before: Manual editing required for every migrated component
 - After: Fully automated - ready for immediate testing
 
+## [2.1.0] - 2026-01-28
+
+### Added
+
+- MUI-recommended pattern (PREFIX + classes + nested selectors) is now the default migration approach
+- Simplified CLI interface for easier usage
+
+### Changed
+
+- The `--mui-pattern` flag is no longer needed as this pattern is now the default behavior
+- The `-t, --transform` option has been streamlined - tool now uses `jssToEmotionMUI` as the default
+- Updated all documentation to reflect the simplified approach
+
+### Improved
+
+- Clearer migration path with a single, well-tested pattern
+- Reduced confusion by focusing on the most reliable migration strategy
+- Better alignment with MUI's official migration recommendations
+
+### Usage Notes
+
+The tool now defaults to the MUI-recommended pattern, which has proven to be the most reliable and maintainable approach for migrating JSS to Emotion, especially for codebases with heavy MUI component usage.
+
+**Command usage remains the same:**
+```bash
+jss-to-emotion migrate "src/**/*.js"
+```
+
+The `--mui-pattern` flag is still accepted but is no longer necessary.
+
 ## [Unreleased]
 
 ### Planned
