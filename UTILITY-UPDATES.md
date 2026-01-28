@@ -276,13 +276,13 @@ The utility works exactly the same way, but now produces better output:
 
 ```bash
 # Preview changes
-jss-to-emotion migrate "src/**/*.js" --dry-run
+jss-to-emotion-migrator migrate "src/**/*.js" --dry-run
 
 # Apply migration
-jss-to-emotion migrate "src/**/*.js"
+jss-to-emotion-migrator migrate "src/**/*.js"
 
 # With MUI pattern (nested selectors)
-jss-to-emotion migrate "src/**/*.js" --mui-pattern
+jss-to-emotion-migrator migrate "src/**/*.js" --mui-pattern
 ```
 
 ## Configuration

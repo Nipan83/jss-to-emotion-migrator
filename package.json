@@ -1,11 +1,11 @@
 {
   "name": "jss-to-emotion-migrator",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A codemod tool to migrate JSS styles (makeStyles, withStyles, createStyles) to Emotion using MUI styled API",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "bin": {
-    "jss-to-emotion": "./bin/cli.js"
+    "jss-to-emotion-migrator": "./bin/cli.js"
   },
   "files": [
     "bin/",

@@ -251,10 +251,10 @@ const MyComponent = ({ isActive }) => {
 
 ```bash
 # Dry run to preview changes
-jss-to-emotion migrate "src/app/**/*.js" --dry-run
+jss-to-emotion-migrator migrate "src/app/**/*.js" --dry-run
 
 # Apply migration (uses MUI pattern by default)
-jss-to-emotion migrate "src/app/**/*.js"
+jss-to-emotion-migrator migrate "src/app/**/*.js"
 ```
 
 See [MUI-MIGRATION-GUIDE.md](./MUI-MIGRATION-GUIDE.md) for the current migration pattern details.

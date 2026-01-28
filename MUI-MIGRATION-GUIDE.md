@@ -128,17 +128,17 @@ return (
 ### Basic Command
 
 ```bash
-jss-to-emotion migrate "src/**/*.js" --dry-run
+jss-to-emotion-migrator migrate "src/**/*.js" --dry-run
 ```
 
 ### With Other Options
 
 ```bash
 # Include only specific files
-jss-to-emotion migrate "src/**/*.js" --include "overview"
+jss-to-emotion-migrator migrate "src/**/*.js" --include "overview"
 
 # Skip confirmation
-jss-to-emotion migrate "src/**/*.js" -y
+jss-to-emotion-migrator migrate "src/**/*.js" -y
 ```
 
 ## Troubleshooting

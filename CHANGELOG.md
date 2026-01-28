@@ -106,7 +106,7 @@ The tool now defaults to the MUI-recommended pattern, which has proven to be the
 
 **Command usage remains the same:**
 ```bash
-jss-to-emotion migrate "src/**/*.js"
+jss-to-emotion-migrator migrate "src/**/*.js"
 ```
 
 The `--mui-pattern` flag is still accepted but is no longer necessary.
@@ -117,6 +117,13 @@ The `--mui-pattern` flag is still accepted but is no longer necessary.
 
 - Corrected CLI binary name references in documentation from `./jss-to-emotion-migrator/bin/cli.js` to `jss-to-emotion`
 - Updated UPDATES-SUMMARY.md and UTILITY-UPDATES.md with correct command examples
+
+## [2.1.2] - 2026-01-28
+
+### Fixed
+
+- Corrected binary name in package.json from `jss-to-emotion` to `jss-to-emotion-migrator` to match package name
+- Updated all documentation to use correct CLI command `jss-to-emotion-migrator`
 
 ## [Unreleased]
 

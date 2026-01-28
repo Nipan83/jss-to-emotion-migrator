@@ -51,27 +51,27 @@ npm install --save-dev jss-to-emotion-migrator
 
 ```bash
 # See what would be migrated without making changes
-jss-to-emotion migrate "src/**/*.{js,jsx,ts,tsx}" --dry-run
+jss-to-emotion-migrator migrate "src/**/*.{js,jsx,ts,tsx}" --dry-run
 ```
 
 ### 2. Run Migration
 
 ```bash
 # Migrate all files (uses MUI-recommended pattern: PREFIX + classes + nested selectors)
-jss-to-emotion migrate "src/**/*.{js,jsx,ts,tsx}"
+jss-to-emotion-migrator migrate "src/**/*.{js,jsx,ts,tsx}"
 
 # Migrate specific directories
-jss-to-emotion migrate "src/components/**/*.jsx" "src/pages/**/*.jsx"
+jss-to-emotion-migrator migrate "src/components/**/*.jsx" "src/pages/**/*.jsx"
 ```
 
 ### 3. Clean Up
 
 ```bash
 # Remove unused JSS imports
-jss-to-emotion cleanup "src/**/*.{js,jsx,ts,tsx}"
+jss-to-emotion-migrator cleanup "src/**/*.{js,jsx,ts,tsx}"
 
 # Also delete dead style files
-jss-to-emotion cleanup "src/**/*.{js,jsx,ts,tsx}" --delete-dead-files
+jss-to-emotion-migrator cleanup "src/**/*.{js,jsx,ts,tsx}" --delete-dead-files
 ```
 
 ## CLI Reference
@@ -81,7 +81,7 @@ jss-to-emotion cleanup "src/**/*.{js,jsx,ts,tsx}" --delete-dead-files
 Migrate JSS styles to Emotion styled API.
 
 ```bash
-jss-to-emotion migrate <patterns...> [options]
+jss-to-emotion-migrator migrate <patterns...> [options]
 ```
 
 #### Options
@@ -103,7 +103,7 @@ jss-to-emotion migrate <patterns...> [options]
 Remove unused JSS imports and dead code files.
 
 ```bash
-jss-to-emotion cleanup <patterns...> [options]
+jss-to-emotion-migrator cleanup <patterns...> [options]
 ```
 
 #### Options
@@ -262,16 +262,16 @@ For large codebases, migrate incrementally:
 
 ```bash
 # Migrate only Button components first
-jss-to-emotion migrate "src/**/*.jsx" --include "Button"
+jss-to-emotion-migrator migrate "src/**/*.jsx" --include "Button"
 
 # Migrate specific directories
-jss-to-emotion migrate "src/**/*.jsx" --include "components/forms"
+jss-to-emotion-migrator migrate "src/**/*.jsx" --include "components/forms"
 
 # Exclude test files
-jss-to-emotion migrate "src/**/*.jsx" --exclude "\.test\." --exclude "\.spec\."
+jss-to-emotion-migrator migrate "src/**/*.jsx" --exclude "\.test\." --exclude "\.spec\."
 
 # Combine patterns
-jss-to-emotion migrate "src/**/*.jsx" \
+jss-to-emotion-migrator migrate "src/**/*.jsx" \
   --include "components" \
   --exclude "legacy" \
   --exclude "\.test\."
@@ -281,10 +281,10 @@ jss-to-emotion migrate "src/**/*.jsx" \
 
 ```bash
 # Non-interactive mode for CI/CD pipelines
-jss-to-emotion migrate "src/**/*.jsx" --yes
+jss-to-emotion-migrator migrate "src/**/*.jsx" --yes
 
 # Dry run in CI to verify no unintended changes
-jss-to-emotion migrate "src/**/*.jsx" --dry-run --yes
+jss-to-emotion-migrator migrate "src/**/*.jsx" --dry-run --yes
 ```
 
 ## Best Practices
@@ -302,7 +302,7 @@ jss-to-emotion migrate "src/**/*.jsx" --dry-run --yes
 Make sure to use the correct parser:
 
 ```bash
-jss-to-emotion migrate "src/**/*.tsx" --parser tsx
+jss-to-emotion-migrator migrate "src/**/*.tsx" --parser tsx
 ```
 
 ### Some Files Skipped
@@ -310,7 +310,7 @@ jss-to-emotion migrate "src/**/*.tsx" --parser tsx
 Files are skipped if they don't contain JSS patterns. Use `--verbose` to see details:
 
 ```bash
-jss-to-emotion migrate "src/**/*.jsx" --verbose
+jss-to-emotion-migrator migrate "src/**/*.jsx" --verbose
 ```
 
 ### Errors During Migration
@@ -318,7 +318,7 @@ jss-to-emotion migrate "src/**/*.jsx" --verbose
 Check the error details and file:
 
 ```bash
-jss-to-emotion migrate "src/**/*.jsx" --verbose
+jss-to-emotion-migrator migrate "src/**/*.jsx" --verbose
 ```
 
 ## Migration Pattern
@@ -329,7 +329,7 @@ This tool uses MUI's recommended approach with PREFIX + classes + nested selecto
 - Maintaining backward compatibility during gradual migration
 
 ```bash
-jss-to-emotion migrate "src/**/*.jsx"
+jss-to-emotion-migrator migrate "src/**/*.jsx"
 ```
 
 See **[MUI-MIGRATION-GUIDE.md](./MUI-MIGRATION-GUIDE.md)** for detailed examples and best practices.
