@@ -126,13 +126,13 @@ The utility works exactly the same way - just with better output:
 
 ```bash
 # Preview changes (RECOMMENDED FIRST)
-./jss-to-emotion-migrator/bin/cli.js migrate "src/**/*.js" --dry-run
+jss-to-emotion migrate "src/**/*.js" --dry-run
 
 # Apply migration
-./jss-to-emotion-migrator/bin/cli.js migrate "src/**/*.js"
+jss-to-emotion migrate "src/**/*.js"
 
 # Specific files
-./jss-to-emotion-migrator/bin/cli.js migrate "src/app/overview/**/*.js"
+jss-to-emotion migrate "src/app/overview/**/*.js"
 ```
 
 ## What to Expect

@@ -111,6 +111,13 @@ jss-to-emotion migrate "src/**/*.js"
 
 The `--mui-pattern` flag is still accepted but is no longer necessary.
 
+## [2.1.1] - 2026-01-28
+
+### Fixed
+
+- Corrected CLI binary name references in documentation from `./jss-to-emotion-migrator/bin/cli.js` to `jss-to-emotion`
+- Updated UPDATES-SUMMARY.md and UTILITY-UPDATES.md with correct command examples
+
 ## [Unreleased]
 
 ### Planned
