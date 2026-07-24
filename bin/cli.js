@@ -238,7 +238,7 @@ program
     if (isDryRun) {
       printHeader('👁️', 'JSS to Emotion Migrator - DRY RUN', 'Preview mode: No files will be modified');
     } else {
-      printHeader('🎨', 'JSS to Emotion Migrator', 'Converting to MUI-recommended pattern (PREFIX + classes)');
+      printHeader('🎨', 'JSS to Emotion Migrator', 'Converting to individual styled() components');
     }
     
     const ignorePatterns = options.ignore.split(',').map(p => p.trim());
@@ -327,7 +327,7 @@ program
         
         let result = migrate(source, {
           parser,
-          transform: 'jssToEmotionMUI',
+          transform: 'jssToEmotion',
           filePath,
         });
         

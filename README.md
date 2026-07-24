@@ -57,7 +57,7 @@ jss-to-emotion-migrator migrate "src/**/*.{js,jsx,ts,tsx}" --dry-run
 ### 2. Run Migration
 
 ```bash
-# Migrate all files (uses MUI-recommended pattern: PREFIX + classes + nested selectors)
+# Migrate all files (emits individual styled() components)
 jss-to-emotion-migrator migrate "src/**/*.{js,jsx,ts,tsx}"
 
 # Migrate specific directories
@@ -323,10 +323,24 @@ jss-to-emotion-migrator migrate "src/**/*.jsx" --verbose
 
 ## Migration Pattern
 
-This tool uses MUI's recommended approach with PREFIX + classes + nested selectors. This pattern is optimal for:
-- Large refactors requiring minimal JSX changes
-- Components heavily using MUI's `classes` prop
-- Maintaining backward compatibility during gradual migration
+This tool emits **individual `styled()` components** — one per JSX element that
+used JSS classes. It does **not** use the PREFIX + `classes` object + `<Root>`
+wrapper pattern. Specifically it:
+
+- Wraps MUI components as `styled(<Component>)` and plain HTML as `styled('tag')`,
+  inferring the base from the actual JSX element.
+- Folds the MUI **`classes={{ slot }}` prop** into a single styled component:
+  - `root` → top-level styles
+  - global state slot (`selected`, `checked`, `disabled`, …) → `&.Mui-<state>`
+  - root modifier slot (`sizeSmall`, `colorPrimary`, `vertical`, …) → `&.Mui<Comp>-<slot>`
+  - child/structural slot (`indicator`, `paper`, `thumb`, `label`, …) → `& .Mui<Comp>-<slot>`
+- Converts conditional `classnames(base, { [classes.x]: cond })` into a boolean
+  prop guarded by `shouldForwardProp`, spread as `...(cond && { … })`.
+- Removes `makeStyles` / `useStyles`, unwraps `withStyles` /
+  `compose(withStyles(…), connect(…))`, and strips the `classes` prop (from
+  destructuring, `PropTypes`, and child plumbing).
+- Resolves style objects imported from a sibling module (`import styles from
+  './x-styles'`) when `filePath` is provided.
 
 ```bash
 jss-to-emotion-migrator migrate "src/**/*.jsx"
@@ -346,17 +360,12 @@ See **[MUI-MIGRATION-GUIDE.md](./MUI-MIGRATION-GUIDE.md)** for detailed examples
 ### Quick Reference
 
 **Component Naming:**
-- `root` / `container` → `StyledBox`
-- `title` / `heading` → `TitleText`
-- `button` → `StyledButton`
-- `loading` → `LoadingIcon`
-- `tabs` → `StyledTabs`
+- Element is an MUI/custom component → `Styled<Component>` (e.g. `<Tabs>` → `StyledTabs`, `<Chip>` → `StyledChip`, `<Dialog>` → `StyledDialog`). Aliased imports resolve to the canonical name (`Dialog as MuiDialog` → `StyledDialog`).
+- Element is a plain HTML tag → PascalCase of the primary class key (e.g. `root` → `Root`, `header` → `Header`, `childList` → `ChildList`).
+- Collisions are de-duplicated automatically.
 
 **Element Inference:**
-- Container classes → `Box`
-- Text classes → `Typography`
-- Button classes → `Button`
-- Loading classes → `CircularProgress`
+- The base is taken from the **actual JSX element** the class is applied to — `<ul>` → `styled('ul')`, `<Tabs>` → `styled(Tabs)`, `<div>` → `styled('div')`. It is not guessed from the class name.
 
 **Dynamic Styling:**
 ```javascript

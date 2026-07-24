@@ -5,9 +5,13 @@
 export interface MigrateOptions {
   /** Parser to use: 'babel' | 'tsx' | 'flow' */
   parser?: 'babel' | 'tsx' | 'flow';
-  /** Transform to use: 'jssToEmotion' | 'makeStyles' | 'withStyles' */
-  transform?: 'jssToEmotion' | 'makeStyles' | 'withStyles';
-  /** Path to the file being transformed (for error reporting) */
+  /**
+   * Transform to use. `jssToEmotion` is the single canonical transform;
+   * `makeStyles` / `withStyles` / `jssToEmotionMUI` are deprecated aliases that
+   * now delegate to it.
+   */
+  transform?: 'jssToEmotion' | 'makeStyles' | 'withStyles' | 'jssToEmotionMUI';
+  /** Path to the file being transformed (enables cross-file style resolution). */
   filePath?: string;
 }
 
@@ -80,32 +84,30 @@ export function analyzeForCleanup(source: string, options?: CleanupOptions): Ana
  */
 export function createTransform(transformName?: string): Function;
 
-/** Available transforms */
+/**
+ * Available transforms. `jssToEmotion` is canonical; `makeStyles`, `withStyles`
+ * and `jssToEmotionMUI` are deprecated aliases of it.
+ */
 export const transforms: {
   jssToEmotion: Function;
   makeStyles: Function;
   withStyles: Function;
+  jssToEmotionMUI: Function;
   cleanupJSS: Function;
 };
 
-/** Utility functions */
+/** Utility functions (flat namespace). */
 export const utils: {
-  styleParser: {
-    parseStyleObject: Function;
-    extractStyleProperties: Function;
-  };
-  importHandler: {
-    addImport: Function;
-    removeImport: Function;
-    hasImport: Function;
-  };
-  jsxTransformer: {
-    transformJSXElement: Function;
-  };
-  styleNameUtils: {
-    toPascalCase: Function;
-    classNameToComponentName: Function;
-    generateUniqueComponentName: Function;
-    inferElementType: Function;
-  };
+  deriveStyledComponentName: Function;
+  slotToSelector: Function;
+  isModifierSlot: Function;
+  toPascalCase: Function;
+  pascalCase: Function;
+  generateUniqueComponentName: Function;
+  inferElementType: Function;
+  extractStyleObjectFromMakeStyles: Function;
+  usesTheme: Function;
+  findJSSImports: Function;
+  addStyledImport: Function;
+  [key: string]: Function;
 };

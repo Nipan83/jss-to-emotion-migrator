@@ -250,9 +250,72 @@ function extractElementTypeFromUsage(j, root, className) {
   return elementType;
 }
 
+/**
+ * Converts an arbitrary string (camelCase / kebab / snake) to PascalCase.
+ */
+function pascalCase(str) {
+  if (!str) return '';
+  return str
+    .split(/[-_\s]+/)
+    .map(part => (part ? part.charAt(0).toUpperCase() + part.slice(1) : ''))
+    .join('');
+}
+
+/**
+ * Derives a styled-component name following the imaging-fe convention:
+ *   - MUI / custom component base  → `Styled<Base>` (e.g. Tabs → StyledTabs)
+ *   - plain HTML element base      → PascalCase of the primary class key
+ *                                    (e.g. childList → ChildList, header → Header)
+ *
+ * Ensures uniqueness against `existingNames`, appending the class key or a
+ * numeric suffix on collision.
+ *
+ * @param {object} opts
+ * @param {string} opts.base - Base element: MUI/custom component name or HTML tag.
+ * @param {boolean} opts.isComponent - True when base is an MUI/custom component.
+ * @param {string} opts.primaryClassKey - Representative JSS class key for the element.
+ * @param {Set<string>} opts.existingNames - Names already taken.
+ * @returns {string}
+ */
+function deriveStyledComponentName({ base, isComponent, primaryClassKey, existingNames = new Set() }) {
+  let name;
+  if (isComponent) {
+    // MUI/custom component → `Styled<Component>` (MUI-docs convention, matches the
+    // plurality: StyledTabs, StyledChip, StyledDialog, StyledPopover, …).
+    name = `Styled${pascalCase(base)}`;
+  } else {
+    // Plain HTML element → descriptive PascalCase of the primary class key
+    // (childList→ChildList, header→Header, root→Root).
+    name = pascalCase(primaryClassKey) || `Styled${pascalCase(base)}`;
+  }
+
+  if (!name) {
+    name = 'StyledComponent';
+  }
+
+  // Ensure it is a valid identifier start.
+  if (!/^[A-Za-z_$]/.test(name)) {
+    name = `Styled${name}`;
+  }
+
+  let unique = name;
+  if (existingNames.has(unique) && primaryClassKey) {
+    unique = `${name}${pascalCase(primaryClassKey)}`;
+  }
+  let counter = 2;
+  while (existingNames.has(unique)) {
+    unique = `${name}${counter}`;
+    counter++;
+  }
+  existingNames.add(unique);
+  return unique;
+}
+
 module.exports = {
   toPascalCase,
+  pascalCase,
   generateUniqueComponentName,
+  deriveStyledComponentName,
   inferElementType,
   extractElementTypeFromUsage,
 };
