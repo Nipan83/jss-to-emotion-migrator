@@ -178,10 +178,22 @@ function addStyledImport(j, root) {
     j.literal('@mui/material/styles')
   );
   
-  // Add after other imports
+  // Prefer placing it right after the last existing `@mui/*` import so it groups
+  // with the other MUI imports (matches the observed convention); otherwise fall
+  // back to after the last import, or the top of the file.
   const imports = root.find(j.ImportDeclaration);
   if (imports.length > 0) {
-    j(imports.at(-1).get()).insertAfter(styledImport);
+    let anchor = null;
+    imports.forEach(path => {
+      const source = path.node.source.value;
+      if (typeof source === 'string' && source.startsWith('@mui/')) {
+        anchor = path;
+      }
+    });
+    if (!anchor) {
+      anchor = imports.at(-1).get();
+    }
+    j(anchor).insertAfter(styledImport);
   } else {
     // Add at the beginning of the file
     root.get().node.program.body.unshift(styledImport);

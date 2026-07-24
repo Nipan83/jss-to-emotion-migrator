@@ -1,5 +1,12 @@
 # MUI-Recommended Migration Pattern
 
+> ⚠️ **Outdated (removed in v3.0.0).** The PREFIX + `classes` object + `<Root>`
+> wrapper pattern described below is **no longer produced** by the tool — it did
+> not match how teams migrated in practice. The tool now emits **individual
+> `styled()` components**. See the **Migration Pattern** section of
+> [README.md](./README.md) for current behavior. This file is kept for historical
+> reference only.
+
 This guide explains the MUI-recommended migration pattern used by the jss-to-emotion-migrator tool.
 
 ## Overview

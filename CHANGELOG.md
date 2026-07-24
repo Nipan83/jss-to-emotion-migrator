@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-07-24
+
+Overhaul aligning tool output with the conventions used across a large real-world
+JSS→Emotion migration (28 merged PRs).
+
+### Changed (breaking)
+
+- **Default output is now individual `styled()` components.** The previous default
+  (`jssToEmotionMUI`: `PREFIX` + `classes` object + `<Root>` wrapper) is removed —
+  it matched none of the real migrations.
+- **Consolidated to a single transform.** `jssToEmotion` is canonical; `makeStyles`,
+  `withStyles` and `jssToEmotionMUI` are now deprecated aliases of it.
+- Component naming: MUI/custom element → `Styled<Component>`; plain HTML → PascalCase
+  of the primary class key. Base element is inferred from the **actual JSX element**.
+
+### Added
+
+- **MUI `classes={{ slot }}` prop** support: `root` → top-level, global state →
+  `&.Mui-<state>`, root modifier (`sizeSmall`/`colorPrimary`/…) → `&.Mui<Comp>-<slot>`,
+  child slot (`indicator`/`paper`/`thumb`/…) → `& .Mui<Comp>-<slot>`.
+- **Conditional styling via props**: `classnames(base, { [classes.x]: cond })` →
+  boolean prop + `shouldForwardProp` + `...(cond && { … })`.
+- **`compose(withStyles(…), connect(…))`** unwrapping, `classes` prop removal
+  (destructuring, `PropTypes`, child plumbing), and inline
+  `withStyles({…})(MuiComp)` → `styled(MuiComp)({…})` conversion.
+- **Cross-file style resolution**: style objects imported from a sibling module
+  (`import styles from './x-styles'`) are resolved when `filePath` is provided.
+- Aliased MUI imports (`Dialog as MuiDialog`) resolve to the canonical component
+  name for selectors and naming.
+- Dead class references (never defined in a resolved source) are stripped.
+- Output formatter removes recast reprint artifacts (in-object blank lines,
+  multi-line destructuring params).
+
 ## [1.0.0] - 2024-01-01
 
 ### Added
